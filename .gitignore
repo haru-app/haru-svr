@@ -157,4 +157,4 @@ pyvenv.cfg
 pip-selfcheck.json
 
 #설정 파일
-config/
+/config
