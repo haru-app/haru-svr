@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 import decimal
-from src.config.config import Config
+from src.config import Config
 
 
 class Database:
