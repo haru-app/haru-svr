@@ -1,45 +1,60 @@
 from flask_restful import Resource, reqparse
+from flask import jsonify, make_response
 from .service import UserService
 
 
 class UserController(Resource):
-    def get(self):
+    def post(self):
         """
-            Example endpoint returning a list of colors by palette
-            This is using docstrings for specifications.
+            회원가입을 합니다.
             ---
             tags:
-              - calllbacks
-            parameters:
-              - name: test
-                in: query
-                schema:
-                  type: string
-                  enum: ['all', 'rgb', 'cmyk']
+                - user
+            requestBody:
+                description: Optional description in *Markdown*
                 required: true
-                default: all
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+                                userName:
+                                    type: string
+                                birthday:
+                                    type: string
+                            required:
+                                - email
+                                - password
+                                - userName
             definitions:
-              Palette:
-                type: object
-                properties:
-                  palette_name:
-                    type: array
-                    items:
-                      $ref: '#/definitions/Color'
-              Color:
-                type: string
+                Palette:
+                    type: object
+                    properties:
+                    palette_name:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Color'
+                Color:
+                    type: string
             responses:
-              200:
-                description: A list of colors (may be filtered by palette)
-                schema:
-                  $ref: '#/definitions/Palette'
-                examples:
-                  rgb: ['red', 'green', 'blue']
+                200:
+                    description: A list of colors (may be filtered by palette)
+                    schema:
+                    $ref: '#/definitions/Palette'
+                    examples:
+                    rgb: ['red', 'green', 'blue']
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('test')
+        parser.add_argument('email', required=True, type=str)
+        parser.add_argument('password', required=True, type=str)
+        parser.add_argument('userName', required=True, type=str)
+        parser.add_argument('birthday', required=False, default=None, type=str)
         args = parser.parse_args()
-        print(args)
+
         userService = UserService()
-        data = userService.getUser();
-        return data
+        userService.register(args)
+        return make_response(jsonify(), 200)

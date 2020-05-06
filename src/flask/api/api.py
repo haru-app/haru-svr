@@ -1,14 +1,10 @@
 from .user.controller import UserController
+from .auth.login.controller import LoginController
 
 
 class Api:
-    def __init__(self):
-        self.controllers = [
-            {
-                'class': UserController,
-                'path': '/user'
-            }
+    def getRouters(self):
+        return [
+            {'class': UserController, 'path': '/api/user'},
+            {'class': LoginController, 'path': '/api/auth/login'}
         ]
-
-    def getControllers(self):
-        return self.controllers

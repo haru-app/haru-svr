@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, exc
 import decimal
 from src.config import Config
 
@@ -32,7 +32,10 @@ class Database:
         with Database.engine.connect() as conn:
             result = conn.execute(text(sql), parameters)
             count = result.rowcount
-            data = result.fetchall()
+            try:
+                data = result.fetchall()
+            except exc.ResourceClosedError:
+                data = None
         return ResultData({'count': count, 'data': data})
 
 
@@ -44,9 +47,8 @@ class ResultData:
     def __init__(self, result):
         self.allData = result['data']
         self.count = result['count']
-        self.dictAllData = [dict(r) for r in self.allData]
-
-        super().__init__()
+        if self.allData is not None:
+            self.dictAllData = [dict(r) for r in self.allData]
 
     def one(self):
         return self.dictAllData[0] if len(self.dictAllData) > 0 else None

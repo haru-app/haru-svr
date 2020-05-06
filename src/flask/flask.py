@@ -70,11 +70,9 @@ class FlaskServer:
         self.initRouter()
 
     def initRouter(self):
-        myApi = MyApi()
-        controllers = myApi.getControllers()
-
-        for c in controllers:
-            self.api.add_resource(c['class'], '/api' + c['path'])
+        routers = MyApi().getRouters()
+        for r in routers:
+            self.api.add_resource(r['class'], r['path'])
 
     def run(self):
         self.app.run(debug=True)
