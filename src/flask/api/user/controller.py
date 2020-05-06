@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from .service import UserService
 
 
@@ -11,8 +11,8 @@ class UserController(Resource):
             tags:
               - calllbacks
             parameters:
-              - name: palette
-                in: path
+              - name: test
+                in: query
                 schema:
                   type: string
                   enum: ['all', 'rgb', 'cmyk']
@@ -36,6 +36,10 @@ class UserController(Resource):
                 examples:
                   rgb: ['red', 'green', 'blue']
         """
+        parser = reqparse.RequestParser()
+        parser.add_argument('test')
+        args = parser.parse_args()
+        print(args)
         userService = UserService()
         data = userService.getUser();
         return data
