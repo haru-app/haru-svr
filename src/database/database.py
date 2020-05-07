@@ -36,17 +36,17 @@ class Database:
                 data = result.fetchall()
             except exc.ResourceClosedError:
                 data = None
-        return ResultData({'count': count, 'data': data})
+        return ResultData({'rowCount': count, 'data': data})
 
 
 class ResultData:
     allData = None
-    count = None
+    rowCount = None
     dictAllData = None
 
     def __init__(self, result):
         self.allData = result['data']
-        self.count = result['count']
+        self.rowCount = result['rowCount']
         if self.allData is not None:
             self.dictAllData = [dict(r) for r in self.allData]
 

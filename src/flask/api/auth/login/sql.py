@@ -14,3 +14,14 @@ class LoginSQL:
                 u.email = :email AND
                 u."password" = :password
         """
+
+    @staticmethod
+    def updateRefreshToken():
+        return """
+            UPDATE 
+                "user" u
+            SET
+                "refreshToken" = :refreshToken
+            WHERE 
+                u.email = :email
+        """

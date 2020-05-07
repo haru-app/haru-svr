@@ -1,9 +1,12 @@
 from flask_restful import Resource, reqparse
 from flask import jsonify, make_response
 from .service import UserService
+from src.flask.decorator.auth import AuthDecorator
 
 
 class UserController(Resource):
+    method_decorators = {'post': [AuthDecorator.decorator]}
+
     def post(self):
         """
             회원가입을 합니다.

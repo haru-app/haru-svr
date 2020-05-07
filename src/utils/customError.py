@@ -4,5 +4,5 @@ class CustomError:
         self.title = title
         self.detail = detail
 
-    def __get__(self, instance, owner):
+    def get(self):
         return {'code': self.code, 'title': self.title, 'detail': self.detail}
