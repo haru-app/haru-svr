@@ -40,8 +40,8 @@ class LoginController(Resource):
                   rgb: ['red', 'green', 'blue']
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', required=True, type=str)
-        parser.add_argument('password', required=True, type=str)
+        parser.add_argument('email', location='args', required=True, type=str)
+        parser.add_argument('password', location='args', required=True, type=str)
         args = parser.parse_args()
         loginService = LoginService()
         data = loginService.login(args['email'], args['password'])

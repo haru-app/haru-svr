@@ -6,8 +6,11 @@ from flasgger import Swagger
 from datetime import date
 from .api import Api as MyApi
 
+from .error.error_handler import ErrorHandler
+
 
 # 웹 서버 구동
+
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, date):
@@ -22,7 +25,8 @@ class FlaskServer:
     swagger = None
 
     def __init__(self):
-        self.app = Flask(__name__)
+        app = self.app = Flask(__name__)
+
         self.app.json_encoder = MyJSONEncoder
         swagger_config = {
             "headers": [],
@@ -66,7 +70,7 @@ class FlaskServer:
             "description": "Haru API Documentation",
         }
         self.swagger = Swagger(self.app, config=swagger_config)
-        self.api = Api(self.app)
+        self.api = Api(self.app, errors=ErrorHandler)
         self.initRouter()
 
     def initRouter(self):
