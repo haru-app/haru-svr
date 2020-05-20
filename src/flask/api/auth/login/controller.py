@@ -6,38 +6,29 @@ from .service import LoginService
 class LoginController(Resource):
     def get(self):
         """
-            로그인을 합니다.
+            로그인
             ---
+            description: 로그인을 합니다.
             tags:
               - auth
             parameters:
               - name: email
+                description: 이메일
                 in: query
                 schema:
                   type: string
                 required: true
               - name: password
+                description: 비밀번호
                 in: query
                 schema:
                   type: string
                 required: true
-            definitions:
-              Palette:
-                type: object
-                properties:
-                  palette_name:
-                    type: array
-                    items:
-                      $ref: '#/definitions/Color'
-              Color:
-                type: string
             responses:
               200:
-                description: A list of colors (may be filtered by palette)
-                schema:
-                  $ref: '#/definitions/Palette'
-                examples:
-                  rgb: ['red', 'green', 'blue']
+                description: 성공
+              500:
+                description: 실패
         """
         parser = reqparse.RequestParser()
         parser.add_argument('email', location='args', required=True, type=str)

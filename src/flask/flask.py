@@ -1,15 +1,19 @@
 import decimal
-from flask import Flask
+from flask import Flask, jsonify, make_response
 from flask.json import JSONEncoder
 from flask_restful import Api
 from flasgger import Swagger
 from datetime import date
+
+from werkzeug.exceptions import InternalServerError, HTTPException
+
 from .api import Api as MyApi
 
 from .error.error_handler import ErrorHandler
 
-
 # 웹 서버 구동
+from ..utils.customError import CustomError
+
 
 class MyJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -25,7 +29,15 @@ class FlaskServer:
     swagger = None
 
     def __init__(self):
-        app = self.app = Flask(__name__)
+        appVar = self.app = Flask(__name__)
+
+        self.app.config['JSON_AS_ASCII'] = False
+
+        @appVar.errorhandler(Exception)
+        def all_exception(error):
+            if isinstance(error, CustomError):
+                return make_response(jsonify(error.get()), error.status)
+            return CustomError().get(), 500
 
         self.app.json_encoder = MyJSONEncoder
         swagger_config = {
@@ -70,7 +82,7 @@ class FlaskServer:
             "description": "Haru API Documentation",
         }
         self.swagger = Swagger(self.app, config=swagger_config)
-        self.api = Api(self.app, errors=ErrorHandler)
+        self.api = Api(self.app)
         self.initRouter()
 
     def initRouter(self):

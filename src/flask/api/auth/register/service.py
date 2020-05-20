@@ -2,10 +2,10 @@ from src.database.database import Database
 from src.utils.customError import CustomError
 from src.utils.crypto import Crypto
 from src.utils.jwt import JWT
-from .sql import LoginSQL
+from .sql import RegisterSQL
 
 
-class LoginService:
+class RegisterService:
     def login(self, email, password):
         result = Database.query(LoginSQL.login(), {'email': email, 'password': Crypto.sha256(password)}).one()
 
@@ -21,6 +21,6 @@ class LoginService:
         return {'accessToken': accessToken}
 
     def updateRefreshToken(self, token, email):
-        count = Database.query(LoginSQL.updateRefreshToken(), {'refreshToken': token, 'email': email}).count()
+        count = Database.query(RegisterSQL.updateRefreshToken(), {'refreshToken': token, 'email': email}).count()
         if count == 0:
             raise CustomError()
