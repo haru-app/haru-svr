@@ -2,5 +2,5 @@ flasgger>=0,<1
 Flask>=1,<2
 Flask-RESTful>=0,<1
 SQLAlchemy>=1,<2
-psycopg2>=2,<3
+psycopg2-binary>=2,<3
 PyJWT>=1,<2
