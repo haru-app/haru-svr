@@ -9,10 +9,17 @@ from werkzeug.exceptions import InternalServerError, HTTPException
 
 from .api import Api as MyApi
 
-from .error.error_handler import ErrorHandler
-
 # 웹 서버 구동
-from ..utils.customError import CustomError
+from src.utils.customError import CustomError
+
+"""
+401 인증오류
+403 쿠키는 있으나 권한이 없음 (마스터인지 유저인지)
+404 페이지 없음
+422 파라미터, 바디 오류
+
+500 서버 오류
+"""
 
 
 class MyJSONEncoder(JSONEncoder):
@@ -36,7 +43,13 @@ class FlaskServer:
         @appVar.errorhandler(Exception)
         def all_exception(error):
             if isinstance(error, CustomError):
+                print('-----------E R R O R-----------')
+                print(error.get())
+                print('-----------E R R O R-----------')
                 return make_response(jsonify(error.get()), error.status)
+            print('-----------E R R O R-----------')
+            print(error)
+            print('-----------E R R O R-----------')
             return CustomError().get(), 500
 
         self.app.json_encoder = MyJSONEncoder

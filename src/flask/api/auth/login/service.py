@@ -10,7 +10,7 @@ class LoginService:
         result = Database.query(LoginSQL.login(), {'email': email, 'password': Crypto.sha256(password)}).one()
 
         if result is None:
-            raise CustomError(500, 1000, '로그인 오류', '일치하는 계정이 없습니다.')
+            raise CustomError(500, 1000, '일치하는 계정이 없습니다.')
 
         jwt = JWT()
         accessToken = jwt.createAccessToken(email, result['userName'])

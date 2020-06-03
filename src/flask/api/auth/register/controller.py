@@ -1,5 +1,9 @@
+from datetime import datetime
+
 from flask_restful import Resource, reqparse
 from flask import jsonify, make_response
+
+from src.utils.validator import Validator
 from .service import RegisterService
 
 
@@ -30,7 +34,7 @@ class RegisterController(Resource):
                       password:
                         description: 비밀번호
                         type: string
-                      userName:
+                      username:
                         description: 사용자 이름
                         type: string
                       birthday:
@@ -43,11 +47,16 @@ class RegisterController(Resource):
                 description: 실패
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', location='args', required=True, type=str)
-        parser.add_argument('password', location='args', required=True, type=str)
-        parser.add_argument('username', location='args', required=True, type=str)
-        parser.add_argument('birthday', location='args', required=True, type=str)
-        args = parser.parse_args()
-        loginService = RegisterService()
-        data = loginService.login(args['email'], args['password'])
-        return make_response(jsonify(data), 200)
+        parser.add_argument('email', location='json')
+        parser.add_argument('password', location='json')
+        parser.add_argument('username', location='json')
+        parser.add_argument('birthday', location='json')
+        args = Validator.validate(
+            {'email': Validator.email(),
+             'password': Validator.password(),
+             'username': Validator.username(),
+             'birthday': Validator.birthday()}, parser.parse_args())
+
+        registerService = RegisterService()
+        registerService.register(args['email'], args['password'], args['username'], args['birthday'])
+        return make_response(jsonify(), 200)

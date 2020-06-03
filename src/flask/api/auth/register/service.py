@@ -6,21 +6,10 @@ from .sql import RegisterSQL
 
 
 class RegisterService:
-    def login(self, email, password):
-        result = Database.query(LoginSQL.login(), {'email': email, 'password': Crypto.sha256(password)}).one()
+    def register(self, email, password, username, birthday):
+        count = Database.query(RegisterSQL.register(),
+                               {'email': email, 'password': Crypto.sha256(password), 'username': username,
+                                'birthday': birthday}).count()
 
-        if result is None:
-            raise CustomError(500, 1000, '로그인 오류', '일치하는 계정이 없습니다.')
-
-        jwt = JWT()
-        accessToken = jwt.createAccessToken(email, result['userName'])
-        refreshToken = jwt.createRefreshToken(email, result['userName'])
-
-        self.updateRefreshToken(refreshToken, email)
-
-        return {'accessToken': accessToken}
-
-    def updateRefreshToken(self, token, email):
-        count = Database.query(RegisterSQL.updateRefreshToken(), {'refreshToken': token, 'email': email}).count()
         if count == 0:
-            raise CustomError()
+            raise CustomError(500, 1000, '중본된 이메일 입니다.')
