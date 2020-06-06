@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask_restful import Resource, reqparse
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 
 from src.utils.validator import Validator
 from .service import RegisterService
@@ -46,6 +46,7 @@ class RegisterController(Resource):
               500:
                 description: 실패
         """
+        print(request.data);
         parser = reqparse.RequestParser()
         parser.add_argument('email', location='json')
         parser.add_argument('password', location='json')

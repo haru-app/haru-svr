@@ -2,17 +2,17 @@ from flask_restful import Resource, reqparse
 from flask import jsonify, make_response
 
 from src.utils.validator import Validator
-from .service import LoginService
+from .service import DuplicateEmailService
 
 
-class LoginController(Resource):
+class DuplicateEmailController(Resource):
     def get(self):
         """
-            로그인
+            이메일 중복 체크
             ---
-            description: 로그인을 합니다.
+            description: 이메일 중복 체크 합니다.
             tags:
-              - auth
+              - user
             parameters:
               - name: email
                 description: 이메일
@@ -34,9 +34,8 @@ class LoginController(Resource):
         """
         parser = reqparse.RequestParser()
         parser.add_argument('email', location='args')
-        parser.add_argument('password', location='args')
         args = parser.parse_args()
-        
-        loginService = LoginService()
-        data = loginService.login(args['email'], args['password'])
-        return make_response(jsonify(data), 200)
+
+        duplicateEmailService = DuplicateEmailService()
+        result = duplicateEmailService.duplicateEmail(args['email'])
+        return make_response(jsonify(result), 200)
