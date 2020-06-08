@@ -13,12 +13,21 @@ class LoginService:
             raise CustomError(500, 1000, '일치하는 계정이 없습니다.')
 
         jwt = JWT()
-        accessToken = jwt.createAccessToken(email, result['userName'])
-        refreshToken = jwt.createRefreshToken(email, result['userName'])
+        accessToken = jwt.createAccessToken(email, result['username'])
+        refreshToken = jwt.createRefreshToken(email, result['username'])
 
-        self.updateRefreshToken(refreshToken, email)
+        def transFunc(query, commit, rollback):
+            count = query(LoginSQL.updateRefreshToken(), {'refreshToken': refreshToken, 'email': email})
+            if count == 0:
+                raise CustomError()
+            count = query(LoginSQL.updateUpdateTime(), {'refreshToken': refreshToken, 'email': email})
+            if count == 0:
+                raise CustomError()
+            commit()
 
-        return {'accessToken': accessToken}
+        Database.transaction(transFunc)
+        
+        return {'accessToken': accessToken, 'refreshToken': refreshToken, **result}
 
     def updateRefreshToken(self, token, email):
         count = Database.query(LoginSQL.updateRefreshToken(), {'refreshToken': token, 'email': email}).count()

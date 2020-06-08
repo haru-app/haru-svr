@@ -3,11 +3,8 @@ class LoginSQL:
     def login():
         return """
             SELECT 
-                u."userIdx",
                 u.email,
-                u."userName",
-                u."createTime",
-                u."updateTime"
+                u."username"
             FROM 
                 "user" u 
             WHERE 
@@ -22,6 +19,17 @@ class LoginSQL:
                 "user" u
             SET
                 "refreshToken" = :refreshToken
+            WHERE 
+                u.email = :email
+        """
+
+    @staticmethod
+    def updateUpdateTime():
+        return """
+            UPDATE 
+                "user" u
+            SET
+                "updateTime" = now()
             WHERE 
                 u.email = :email
         """

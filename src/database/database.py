@@ -38,6 +38,45 @@ class Database:
                 data = None
         return ResultData({'rowCount': count, 'data': data})
 
+    @staticmethod
+    def connQuery(conn):
+        def tq(sql, *parameters):
+            nonlocal conn
+            if conn is None:
+                raise Exception("트랜잭션이 시작되지 않았습니다.")
+            data = None
+            count = None
+            result = conn.execute(text(sql), parameters)
+            count = result.rowcount
+            try:
+                data = result.fetchall()
+            except exc.ResourceClosedError:
+                data = None
+            return ResultData({'rowCount': count, 'data': data})
+
+        return tq
+
+    @staticmethod
+    def transaction(transFunc):
+        with Database.engine.connect() as conn:
+            trans = conn.begin()
+
+            def commit():
+                nonlocal trans
+                trans.commit()
+                trans = None
+
+            def rollback():
+                nonlocal trans
+                trans.rollback()
+                trans = None
+
+            try:
+                transFunc(Database.connQuery(conn), commit, rollback)
+            finally:
+                if trans is not None:
+                    rollback()
+
 
 class ResultData:
     allData = None
