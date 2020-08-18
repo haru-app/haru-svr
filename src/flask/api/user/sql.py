@@ -1,9 +1,11 @@
 class UserSQL:
     @staticmethod
-    def register():
+    def getDuplicateEmail():
         return """
-            INSERT INTO 
-                "user" (email, "password", "userName", birthday ) 
-            VALUES 
-                (:email, :password, :userName, :birthday)
+            SELECT 
+                CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS "isDuplicateEmail"
+            FROM 
+                "user" u
+            WHERE
+                u.email = :email
         """

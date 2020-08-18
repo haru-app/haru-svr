@@ -1,12 +1,13 @@
 from flask_restful import Resource, reqparse
 from flask import jsonify, make_response
+from src.flask.api.user.service import UserService
+from src.flask.decorator.auth import AuthDecorator
 
-from src.utils.validator import Validator
-from .service import DuplicateEmailService
 
+class EmailDuplicateController(Resource):
+    method_decorators = {'get': [AuthDecorator.decorator]}
 
-class DuplicateEmailController(Resource):
-    def get(self):
+    def get(self, *args, **kwargs):
         """
             이메일 중복 체크
             ---
@@ -34,8 +35,11 @@ class DuplicateEmailController(Resource):
         """
         parser = reqparse.RequestParser()
         parser.add_argument('email', location='args')
+        parser.add_argument('Authorization', location='headers')
+        parser.add_argument('Content-Type', location='headers')
         args = parser.parse_args()
-
-        duplicateEmailService = DuplicateEmailService()
-        result = duplicateEmailService.duplicateEmail(args['email'])
+        print(args['Authorization'])
+        print(kwargs)
+        userService = UserService()
+        result = userService.duplicateEmail(args['email'])
         return make_response(jsonify(result), 200)

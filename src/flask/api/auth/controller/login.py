@@ -1,12 +1,11 @@
 from flask_restful import Resource, reqparse
 from flask import jsonify, make_response
 
-from src.utils.validator import Validator
-from .service import LoginService
+from src.flask.api.auth.service import AuthService
 
 
 class LoginController(Resource):
-    def get(self):
+    def get(self, *args, **kwargs):
         """
             로그인
             ---
@@ -36,7 +35,7 @@ class LoginController(Resource):
         parser.add_argument('email', location='args')
         parser.add_argument('password', location='args')
         args = parser.parse_args()
-        
-        loginService = LoginService()
-        data = loginService.login(args['email'], args['password'])
+
+        authService = AuthService()
+        data = authService.login(args['email'], args['password'])
         return make_response(jsonify(data), 200)

@@ -1,14 +1,14 @@
-from .auth.register.controller import RegisterController
-from .user.controller import UserController
-from .auth.login.controller import LoginController
-from .user.email.duplicate.controller import DuplicateEmailController
+from src.flask.api.auth.controller.register import RegisterController
+from src.flask.api.auth.controller.token import TokenController
+from src.flask.api.auth.controller.login import LoginController
+from .user.controller.email_duplicate import EmailDuplicateController
 
 
 class Api:
     def getRouters(self):
         return [
-            {'class': DuplicateEmailController, 'path': '/api/user/email/duplicate'},
-            {'class': UserController, 'path': '/api/user'},
+            {'class': EmailDuplicateController, 'path': '/api/user/email/duplicate'},
             {'class': LoginController, 'path': '/api/auth/login'},
-            {'class': RegisterController, 'path': '/api/auth/register'}
+            {'class': RegisterController, 'path': '/api/auth/register'},
+            {'class': TokenController, 'path': '/api/auth/token'}
         ]

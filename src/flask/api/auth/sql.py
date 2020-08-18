@@ -1,8 +1,9 @@
-class LoginSQL:
+class AuthSQL:
     @staticmethod
     def login():
         return """
             SELECT 
+                u."userIdx",
                 u.email,
                 u."username"
             FROM 
@@ -21,6 +22,26 @@ class LoginSQL:
                 "refreshToken" = :refreshToken
             WHERE 
                 u.email = :email
+        """
+
+    @staticmethod
+    def register():
+        return """
+            INSERT INTO 
+                "user"
+                (
+                    email, 
+                    password, 
+                    username, 
+                    birthday
+                )
+            VALUES
+                (
+                    :email, 
+                    :password, 
+                    :username, 
+                    :birthday
+                )
         """
 
     @staticmethod

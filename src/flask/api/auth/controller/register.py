@@ -4,11 +4,11 @@ from flask_restful import Resource, reqparse
 from flask import jsonify, make_response, request
 
 from src.utils.validator import Validator
-from .service import RegisterService
+from src.flask.api.auth.service import AuthService
 
 
 class RegisterController(Resource):
-    def post(self):
+    def post(self, *args, **kwargs):
         """
             회원가입
             ---
@@ -58,6 +58,6 @@ class RegisterController(Resource):
              'username': Validator.username(),
              'birthday': Validator.birthday()}, parser.parse_args())
 
-        registerService = RegisterService()
-        registerService.register(args['email'], args['password'], args['username'], args['birthday'])
+        authService = AuthService()
+        authService.register(args['email'], args['password'], args['username'], args['birthday'])
         return make_response(jsonify(), 200)
