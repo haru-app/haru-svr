@@ -20,7 +20,7 @@ class AuthDecorator:
 
             jwt = JWT()
             token = jwt.validToken(accessToken)
-            print(token)
+            
             kwargs['user'] = token
             if token is None:
                 raise CustomError(401, 1001, '인증 오류', '인증이 만료되었습니다.')

@@ -14,8 +14,8 @@ class AuthService:
             raise CustomError(500, 1000, '일치하는 계정이 없습니다.')
 
         jwt = JWT()
-        accessToken = jwt.createAccessToken(result['userIdx'], email)
-        refreshToken = jwt.createRefreshToken(result['userIdx'], email)
+        accessToken = jwt.createAccessToken(result['userIdx'], email, result['username'])
+        refreshToken = jwt.createRefreshToken(result['userIdx'], email, result['username'])
 
         self.updateRefreshToken(refreshToken, email)
 
@@ -41,12 +41,10 @@ class AuthService:
         if at is None or rt['userIdx'] != at['userIdx'] or rt['email'] != at['email']:
             raise CustomError(500, 1002, '인증이 만료되어 다시 로그인 해야합니다.')
 
-        newAccessToken = jwt.createAccessToken(rt['userIdx'], rt['email'])
-        newRefreshToken = jwt.createAccessToken(rt['userIdx'], rt['email'])
+        newAccessToken = jwt.createAccessToken(rt['userIdx'], rt['email'], rt['username'])
+        # self.updateRefreshToken(newRefreshToken, rt['email'])
 
-        self.updateRefreshToken(newRefreshToken, rt['email'])
-
-        return {'accessToken': newAccessToken}
+        return {'accessToken': newAccessToken, 'email': at['email'], 'username': at['username']}
 
     def updateRefreshToken(self, token, email):
         def transFunc(query, commit, rollback):
