@@ -41,6 +41,11 @@ class AuthService:
         if at is None or rt['userIdx'] != at['userIdx'] or rt['email'] != at['email']:
             raise CustomError(500, 1002, '인증이 만료되어 다시 로그인 해야합니다.')
 
+        result = Database.query(AuthSQL.getRefreshToken(), {'email': rt['email']}).one()
+        
+        if result is None or result['refreshToken'] != refreshToken:
+            raise CustomError(500, 1002, '인증이 만료되어 다시 로그인 해야합니다.')
+
         newAccessToken = jwt.createAccessToken(rt['userIdx'], rt['email'], rt['username'])
         # self.updateRefreshToken(newRefreshToken, rt['email'])
 

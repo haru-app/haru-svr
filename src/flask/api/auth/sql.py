@@ -25,6 +25,17 @@ class AuthSQL:
         """
 
     @staticmethod
+    def getRefreshToken():
+        return """
+            SELECT 
+                u."refreshToken"
+            FROM
+                "user" u
+            WHERE 
+                u.email = :email
+        """
+
+    @staticmethod
     def register():
         return """
             INSERT INTO 
