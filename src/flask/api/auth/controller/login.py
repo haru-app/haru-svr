@@ -5,7 +5,7 @@ from src.flask.api.auth.service import AuthService
 
 
 class LoginController(Resource):
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         """
             로그인
             ---
@@ -32,8 +32,8 @@ class LoginController(Resource):
                 description: 실패
         """
         parser = reqparse.RequestParser()
-        parser.add_argument('email', location='args')
-        parser.add_argument('password', location='args')
+        parser.add_argument('email', location='json')
+        parser.add_argument('password', location='json')
         args = parser.parse_args()
 
         authService = AuthService()
