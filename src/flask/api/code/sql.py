@@ -14,7 +14,7 @@ class CodeSQL:
             a AS (
                 SELECT
                     ct."codeType",
-                    jsonb_agg(jsonb_build_object(ct.code, ct."name") ORDER BY ct.sort ASC) AS code
+                    jsonb_agg(jsonb_build_object('code', ct.code, 'name', ct."name") ORDER BY ct.sort ASC) AS code
                 FROM 
                     "code" ct
                 GROUP BY
