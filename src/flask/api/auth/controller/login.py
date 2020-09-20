@@ -12,19 +12,23 @@ class LoginController(Resource):
             description: 로그인을 합니다.
             tags:
               - auth
-            parameters:
-              - name: email
-                description: 이메일
-                in: query
-                schema:
-                  type: string
-                required: true
-              - name: password
-                description: 비밀번호
-                in: query
-                schema:
-                  type: string
-                required: true
+            requestBody:
+              description: 로그인 내용
+              required: true
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    required:
+                      - email
+                      - password
+                    properties:
+                      email:
+                        description: 이메일
+                        type: string
+                      password:
+                        description: 비밀번호
+                        type: string
             responses:
               200:
                 description: 성공

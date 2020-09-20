@@ -16,7 +16,7 @@ class RegisterController(Resource):
             tags:
               - auth
             requestBody:
-              description: 로그인 내용
+              description: 가입 내용
               required: true
               content:
                 application/json:
