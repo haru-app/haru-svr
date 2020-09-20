@@ -58,13 +58,10 @@ class FlaskServer:
             "openapi": "3.0.2",
             "components": {
                 "securitySchemes": {
-                    "oAuthSample": {
-                        "type": "oauth2",
-                        "flows": {
-                            "clientCredentials": {
-                                "tokenUrl": "https://api.pgsmartshopassistant.com/o/token/",
-                            }
-                        }
+                    "bearerAuth": {
+                        "type": "http",
+                        "scheme": "bearer",
+                        "bearerFormat": "JWT"
                     }
                 },
             },
