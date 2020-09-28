@@ -6,3 +6,9 @@ class DiaryService:
     def getDiaryList(self, userIdx):
         result = Database.query(DiarySQL.getDiaryList(), {'userIdx': userIdx})
         return result.all()
+
+    def addDiary(self, userIdx, diaryName, diaryIconCode, publicRangeCode):
+        result = Database.query(DiarySQL.addDiary(),
+                                {'userIdx': userIdx, 'diaryName': diaryName, 'diaryIconCode': diaryIconCode,
+                                 'publicRangeCode': publicRangeCode})
+        return result.all()

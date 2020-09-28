@@ -5,8 +5,6 @@ from src.flask.decorator.auth import AuthDecorator
 
 
 class AllCodeController(Resource):
-    method_decorators = {'get': [AuthDecorator.decorator]}
-
     def get(self, *args, **kwargs):
         """
             모든 코드 불러오기
