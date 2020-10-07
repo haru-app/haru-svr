@@ -7,3 +7,7 @@ class UserService:
         result = Database.query(UserSQL.getDuplicateEmail(),
                                 {'email': email}).one()
         return result
+
+    def searchUser(self, searchText):
+        result = Database.query(UserSQL.getSearchUserList(), {'searchText': searchText}).all()
+        return result

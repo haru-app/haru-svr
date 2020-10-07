@@ -3,7 +3,7 @@ class FriendSQL:
     def getFriendList():
         return """
         SELECT
-            u.username 
+            u.username, u."userIdx"
         FROM
             friend f
         INNER JOIN friend f2 ON
@@ -56,4 +56,30 @@ class FriendSQL:
         WHERE
 	        "userIdx" = :userIdx
 	        AND "friendUserIdx" = :friendUserIdx
+        """
+
+    @staticmethod
+    def checkFriend():
+        return """
+        SELECT
+            f."userIdx" as userIdx , f."friendUserIdx" as friendUserIdx , f2."userIdx" as userIdx2, f2."friendUserIdx" as friendUserIdx2
+        FROM 
+            friend f
+        FULL OUTER JOIN friend f2 ON 
+            f."userIdx" = f2."friendUserIdx" AND
+            f."friendUserIdx" = f2."userIdx" 
+        WHERE
+            (f."userIdx" = :userIdx AND f."friendUserIdx" = :friendUserIdx)
+            OR (f2."userIdx" = :friendUserIdx AND f2."friendUserIdx" = :userIdx)
+        """
+
+    @staticmethod
+    def deleteFriend():
+        return """
+        DELETE
+        FROM
+	        friend
+        WHERE
+	        "userIdx" in (:userIdx, :friendUserIdx)
+	        AND "friendUserIdx" in (:friendUserIdx, :userIdx)
         """
