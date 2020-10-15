@@ -9,3 +9,15 @@ class UserSQL:
             WHERE
                 u.email = :email
         """
+
+    @staticmethod
+    def getSearchUserList():
+        return """
+            SELECT
+                u."userIdx", u.email, u.username
+            FROM 
+                "user" u
+            WHERE 
+                u.username LIKE :searchText || '%' OR
+                u.email LIKE :searchText || '%' 
+        """

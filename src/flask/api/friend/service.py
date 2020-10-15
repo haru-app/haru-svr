@@ -18,3 +18,11 @@ class FriendService:
     def rejectFriendRequest(self, userIdx, friendUserIdx):
         result = Database.query(FriendSQL.rejectFriendRequest(), {'userIdx': userIdx, 'friendUserIdx': friendUserIdx})
         return result
+
+    def checkFriend(self, userIdx, friendUserIdx):
+        result = Database.query(FriendSQL.checkFriend(), {'userIdx': userIdx, 'friendUserIdx': friendUserIdx}).all()
+        return result
+
+    def deleteFriend(self, userIdx, friendUserIdx):
+        result = Database.query(FriendSQL.deleteFriend(), {'userIdx': userIdx, 'friendUserIdx': friendUserIdx})
+        return result
