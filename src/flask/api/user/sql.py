@@ -18,6 +18,27 @@ class UserSQL:
             FROM 
                 "user" u
             WHERE 
-                u.username LIKE :searchText || '%' OR
-                u.email LIKE :searchText || '%' 
+                ( u.username LIKE :searchText || '%' OR
+                u.email LIKE :searchText || '%' ) AND 
+                u."userIdx" != :userIdx
+        """
+
+    @staticmethod
+    def sendNotice():
+        return """
+            INSERT INTO 
+                "notice" 
+                (
+	                "userIdx",
+	                "noticeTypeCode" ,
+	                "noticeData" ,
+	                "isCheck" 
+                )
+            VALUES 
+                (
+	                :userIdx,
+	                :noticeCodeType,
+	                :noticeData,
+	                :isCheck	
+                )
         """
