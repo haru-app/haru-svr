@@ -9,7 +9,7 @@ class DiaryController(Resource):
 
     def get(self, *args, **kwargs):
         """
-            일기장 목록 가져오
+            일기장 목록 가져오기
             ---
             description: 일기장 목록을 가져옵니다.
             tags:

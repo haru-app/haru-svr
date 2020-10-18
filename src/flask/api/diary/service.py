@@ -12,3 +12,8 @@ class DiaryService:
                                 {'userIdx': userIdx, 'diaryName': diaryName, 'diaryIconCode': diaryIconCode,
                                  'publicRangeCode': publicRangeCode})
         return result.all()
+
+    def removeDiary(self, userIdx, diaryIdx):
+        result = Database.query(DiarySQL.removeDiary(),
+                                {'userIdx': userIdx, 'diaryIdx': diaryIdx})
+        return result.all()
