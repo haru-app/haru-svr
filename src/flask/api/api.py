@@ -2,6 +2,7 @@ from src.flask.api.auth.controller.register import RegisterController
 from src.flask.api.auth.controller.token import TokenController
 from src.flask.api.auth.controller.login import LoginController
 from .code.controller.all import AllCodeController
+from .diary.controller.diary_one import DiaryOneController
 from .user.controller.email_duplicate import EmailDuplicateController
 from .diary.controller import DiaryController
 from .friend.controller import FriendController
@@ -22,6 +23,7 @@ class Api:
             {'class': EmailDuplicateController, 'path': '/api/user/email/duplicate'},
             {'class': AllCodeController, 'path': '/api/code/all'},
             {'class': DiaryController, 'path': '/api/diary'},
+            {'class': DiaryOneController, 'path': '/api/diary/<diaryIdx>'},
             {'class': FriendController, 'path': '/api/friend'},
             {'class': FriendRequestController, 'path': '/api/friend/request'},
             {'class': AllowFriendRequestController, 'path': '/api/friend/request/<friendUserIdx>'},

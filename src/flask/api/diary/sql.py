@@ -32,3 +32,13 @@ class DiarySQL:
             :publicRangeCode
         ) 
         """
+
+    @staticmethod
+    def removeDiary():
+        return """
+        DELETE FROM
+            diary 
+        WHERE
+            "diaryIdx" = :diaryIdx AND
+            "userIdx" = :userIdx
+        """
