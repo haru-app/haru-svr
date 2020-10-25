@@ -8,9 +8,14 @@ class DiaryService:
         return result.all()
 
     def addDiary(self, userIdx, diaryName, diaryIconCode, publicRangeCode):
-        result = Database.query(DiarySQL.addDiary(),
-                                {'userIdx': userIdx, 'diaryName': diaryName, 'diaryIconCode': diaryIconCode,
-                                 'publicRangeCode': publicRangeCode})
+        def tran(query, commit, rollback):
+            resultq = query(DiarySQL.addDiary(),
+                            {'userIdx': userIdx, 'diaryName': diaryName, 'diaryIconCode': diaryIconCode,
+                             'publicRangeCode': publicRangeCode})
+            commit()
+            return resultq
+
+        result = Database.transaction(tran)
         return result.all()
 
     def removeDiary(self, userIdx, diaryIdx):

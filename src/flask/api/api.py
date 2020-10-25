@@ -12,6 +12,7 @@ from .friend.controller.reject import RejectFriendRequestController
 from .user.controller.search import SearchUserController
 from .friend.controller.check import CheckFriendController
 from .friend.controller.delete import DeleteFriendController
+from .writing.controller import WritingController
 
 
 class Api:
@@ -24,6 +25,7 @@ class Api:
             {'class': AllCodeController, 'path': '/api/code/all'},
             {'class': DiaryController, 'path': '/api/diary'},
             {'class': DiaryOneController, 'path': '/api/diary/<diaryIdx>'},
+            {'class': WritingController, 'path': '/api/writing'},
             {'class': FriendController, 'path': '/api/friend'},
             {'class': FriendRequestController, 'path': '/api/friend/request'},
             {'class': AllowFriendRequestController, 'path': '/api/friend/request/<friendUserIdx>'},
