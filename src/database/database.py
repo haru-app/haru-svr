@@ -72,10 +72,12 @@ class Database:
                 trans = None
 
             try:
-                transFunc(Database.connQuery(conn), commit, rollback)
+                result = transFunc(Database.connQuery(conn), commit, rollback)
             finally:
                 if trans is not None:
                     rollback()
+                    
+            return result
 
 
 class ResultData:
