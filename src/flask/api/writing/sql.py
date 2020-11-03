@@ -61,7 +61,8 @@ class WritingSQL:
             dw."content",
             dw.score,
             dw."writingDate",
-            CASE WHEN jsonb_agg(ht."hashTagName") ->> 0 IS NULL THEN '[]'::jsonb ELSE jsonb_agg(ht."hashTagName") END
+            CASE WHEN jsonb_agg(ht."hashTagName") ->> 0 IS NULL THEN '[]'::jsonb ELSE jsonb_agg(ht."hashTagName") END AS "writingTags",
+            u2.username
         FROM
             "diaryWriting" dw 
         LEFT OUTER JOIN "writingTag" wt ON
@@ -71,11 +72,52 @@ class WritingSQL:
         INNER JOIN "diaryMember" dm ON
             dm."diaryIdx" = dw."diaryIdx" AND
             dm."userIdx" = :userIdx
+        INNER JOIN "user" u2 ON
+        	u2."userIdx" = dw."userIdx" 
         WHERE
             dw."diaryIdx" = :diaryIdx
         GROUP BY
             dw.title,
             dw."content",
             dw.score,
-            dw."writingDate"
+            dw."writingDate",
+            u2.username,
+            dw."writingDate",
+            dw."updateTime"
+      ORDER BY
+      	dw."writingDate" DESC,
+      	dw."updateTime" DESC
+        """
+
+    @staticmethod
+    def getWritingListAll():
+        return """        
+        SELECT
+            dw.title,
+            dw."content",
+            dw.score,
+            dw."writingDate",
+            CASE WHEN jsonb_agg(ht."hashTagName") ->> 0 IS NULL THEN '[]'::jsonb ELSE jsonb_agg(ht."hashTagName") END AS "writingTags",
+            u2.username
+        FROM
+            "diaryWriting" dw 
+        LEFT OUTER JOIN "writingTag" wt ON
+            wt."writingIdx" = dw."writingIdx"
+        LEFT OUTER JOIN "hashTag" ht ON
+            ht."hashTagIdx" = wt."hashTagIdx"
+        INNER JOIN "diaryMember" dm ON
+            dm."diaryIdx" = dw."diaryIdx"
+        INNER JOIN "user" u2 ON
+        	u2."userIdx" = dw."userIdx" 
+        GROUP BY
+            dw.title,
+            dw."content",
+            dw.score,
+            dw."writingDate",
+            u2.username,
+            dw."writingDate",
+            dw."updateTime"
+      ORDER BY
+      	dw."writingDate" DESC,
+      	dw."updateTime" DESC
         """

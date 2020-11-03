@@ -24,3 +24,8 @@ class WritingService:
         result = Database.query(WritingSQL.getWritingList(), {'diaryIdx': diaryIdx, 'userIdx': self.user['userIdx']})
 
         return result.all()
+
+    def getWritingAll(self):
+        result = Database.query(WritingSQL.getWritingListAll())
+
+        return result.all()
