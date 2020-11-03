@@ -18,19 +18,37 @@ class DiarySQL:
     @staticmethod
     def addDiary():
         return """
-        INSERT INTO
-            diary (
-                "userIdx",
-                "diaryName",
-                "diaryIconCode",
-                "publicRangeCode"
+            WITH diary AS (
+                INSERT INTO
+                    diary (
+                        "userIdx",
+                        "diaryName",
+                        "diaryIconCode",
+                        "publicRangeCode"
+                    )
+                VALUES (
+                    :userIdx,
+                    :diaryName,
+                    :diaryIconCode,
+                    :publicRangeCode
+                )
+                RETURNING
+                    "diaryIdx"
             )
-        VALUES (
-            :userIdx,
-            :diaryName,
-            :diaryIconCode,
-            :publicRangeCode
-        ) 
+            INSERT INTO
+                "diaryMember" (
+                    "diaryIdx",
+                    "userIdx",
+                    "isAccept"
+                )
+            SELECT
+                "diaryIdx",
+                (:userIdx)::int,
+                TRUE
+            FROM
+                diary
+            RETURNING
+                "diaryIdx"
         """
 
     @staticmethod

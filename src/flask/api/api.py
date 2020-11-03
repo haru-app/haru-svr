@@ -3,6 +3,7 @@ from src.flask.api.auth.controller.token import TokenController
 from src.flask.api.auth.controller.login import LoginController
 from .code.controller.all import AllCodeController
 from .diary.controller.diary_one import DiaryOneController
+from .pdf.controller import PdfController
 from .user.controller.email_duplicate import EmailDuplicateController
 from .diary.controller import DiaryController
 from .friend.controller import FriendController
@@ -13,6 +14,9 @@ from .user.controller.search import SearchUserController
 from .friend.controller.check import CheckFriendController
 from .friend.controller.delete import DeleteFriendController
 from .user.controller.send_notice import SendNoticeController
+from .writing.controller import WritingController
+from .writing.controller.all import WritingAllController
+
 
 
 class Api:
@@ -25,6 +29,8 @@ class Api:
             {'class': AllCodeController, 'path': '/api/code/all'},
             {'class': DiaryController, 'path': '/api/diary'},
             {'class': DiaryOneController, 'path': '/api/diary/<diaryIdx>'},
+            {'class': WritingAllController, 'path': '/api/writing/all'},
+            {'class': WritingController, 'path': '/api/writing'},
             {'class': FriendController, 'path': '/api/friend'},
             {'class': FriendRequestController, 'path': '/api/friend/request'},
             {'class': AllowFriendRequestController, 'path': '/api/friend/request/<friendUserIdx>'},
@@ -33,4 +39,5 @@ class Api:
             {'class': CheckFriendController, 'path': '/api/friendCheck/<friendUserIdx>'},
             {'class': DeleteFriendController, 'path': '/api/friendDelete/<friendUserIdx>'},
             {'class': SendNoticeController, 'path': '/api/user/notice'},
+            {'class': PdfController, 'path': '/api/pdf'}
         ]

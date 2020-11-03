@@ -47,7 +47,7 @@ class DiaryController(Resource):
                       - publicRangeCode
                     properties:
                       diaryName:
-                        diaryName: 일기장 이
+                        diaryName: 일기장 이름
                         type: string
                       diaryIconCode:
                         descripion: 아이콘 코드
@@ -73,4 +73,5 @@ class DiaryController(Resource):
 
         result = diaryService.addDiary(auth['userIdx'], args['diaryName'], args['diaryIconCode'],
                                        args['publicRangeCode'])
+        print(result)
         return make_response(jsonify(result), 200)
