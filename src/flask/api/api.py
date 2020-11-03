@@ -12,6 +12,7 @@ from .friend.controller.reject import RejectFriendRequestController
 from .user.controller.search import SearchUserController
 from .friend.controller.check import CheckFriendController
 from .friend.controller.delete import DeleteFriendController
+from .user.controller.send_notice import SendNoticeController
 
 
 class Api:
@@ -30,5 +31,6 @@ class Api:
             {'class': RejectFriendRequestController, 'path': '/api/friend/request/<friendUserIdx>'},
             {'class': SearchUserController, 'path': '/api/user/search'},
             {'class': CheckFriendController, 'path': '/api/friendCheck/<friendUserIdx>'},
-            {'class': DeleteFriendController, 'path': '/api/friendDelete/<friendUserIdx>'}
+            {'class': DeleteFriendController, 'path': '/api/friendDelete/<friendUserIdx>'},
+            {'class': SendNoticeController, 'path': '/api/user/notice'},
         ]

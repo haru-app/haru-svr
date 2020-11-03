@@ -11,7 +11,7 @@ class SendNoticeController(Resource):
         """
             알람 전송
             ---
-            description: 알람을 전송합니다.
+            description: 알림을 전송합니다.
             tags:
               - friend
             responses:
@@ -22,13 +22,13 @@ class SendNoticeController(Resource):
         """
 
         parser = reqparse.RequestParser()
-        parser.add_argument('friendUserIdx', location='view_args')
-        parser.add_argument('noticeTypeCode', location='view_args')
-        parser.add_argument('noticeData', location='view_args')
-        parser.add_argument('isCheck', location='view_args')
+        parser.add_argument('friendUserIdx', location='json')
+        parser.add_argument('noticeTypeCode', location='json')
         args1 = parser.parse_args()
         auth = kwargs['user']
+        noticeData = {"id": auth["userIdx"]}
 
+        print(args1)
         userService = UserService()
-        userService.sendNotice(args1['friendUserIdx'], args1['noticeTypeCode'], args1['noticeData'], args1['isCheck'])
+        userService.sendNotice(args1['friendUserIdx'], args1['noticeTypeCode'], noticeData, False)
         return make_response(jsonify(), 200)

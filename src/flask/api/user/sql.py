@@ -37,7 +37,7 @@ class UserSQL:
             VALUES 
                 (
 	                :userIdx,
-	                :noticeCodeType,
+	                :noticeTypeCode,
 	                :noticeData,
 	                :isCheck	
                 )
