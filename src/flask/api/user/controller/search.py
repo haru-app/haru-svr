@@ -26,6 +26,5 @@ class SearchUserController(Resource):
         auth = kwargs['user']
 
         userService = UserService()
-        result = userService.searchUser(args['searchText'])
-        print(userService.searchUser(args['searchText']))
+        result = userService.searchUser(args['searchText'], auth['userIdx'])
         return make_response(jsonify(result), 200)
